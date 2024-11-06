@@ -10,13 +10,13 @@ import {ChangeEvent, FormEvent, useState} from "react"
 
 interface FormData {
     userName: string
-    phoneNumber: string
+    email: string
     password: string
 }
 
 interface FormErrors {
     userName?: string
-    phoneNumber?: string
+    email?: string
     password?: string
 }
 
@@ -24,7 +24,7 @@ export default function CreateAccountForm() {
     const router = useRouter()
     const [formData, setFormData] = useState<FormData>({
         userName: "",
-        phoneNumber: "",
+        email: "",
         password: "",
     })
 
@@ -39,8 +39,7 @@ export default function CreateAccountForm() {
     const validateForm = () => {
         const newErrors: FormErrors = {}
         if (!formData.userName) newErrors.userName = "Username is required"
-        if (!formData.phoneNumber)
-            newErrors.phoneNumber = "Phone number is required"
+        if (!formData.email) newErrors.email = "Email number is required"
         if (!formData.password) newErrors.password = "Password is required"
         else if (formData.password.length < 8)
             newErrors.password = "Password must be at least 8 characters"
@@ -102,17 +101,17 @@ export default function CreateAccountForm() {
             </div>
 
             <div className='space-y-2'>
-                <Label htmlFor='phoneNumber'>Phone Number</Label>
+                <Label htmlFor='email'>Email</Label>
                 <Input
-                    type='tel'
-                    id='phoneNumber'
-                    name='phoneNumber'
-                    value={formData.phoneNumber}
+                    type='email'
+                    id='email'
+                    name='email'
+                    value={formData.email}
                     onChange={handleInputChange}
                 />
-                {errors.phoneNumber && (
+                {errors.email && (
                     <p className='text-sm text-red-500 flex items-center gap-1'>
-                        <AlertCircle size={16} /> {errors.phoneNumber}
+                        <AlertCircle size={16} /> {errors.email}
                     </p>
                 )}
             </div>
@@ -139,8 +138,8 @@ export default function CreateAccountForm() {
 
             <p className='mt-5 text-center'>
                 Already have an account?{" "}
-                <Link href='/login' className='ml-2'>
-                    <Button>Login</Button>
+                <Link href='/login' className='ml-2 underline'>
+                    Login
                 </Link>
             </p>
         </form>

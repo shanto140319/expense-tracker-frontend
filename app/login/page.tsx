@@ -7,6 +7,7 @@ import {AlertCircle} from "lucide-react"
 import Link from "next/link"
 import {useRouter} from "next/navigation"
 import {ChangeEvent, FormEvent, useState} from "react"
+import toast from "react-hot-toast"
 
 interface FormData {
     userName: string
@@ -46,6 +47,8 @@ export default function LoginForm() {
         e.preventDefault()
         if (validateForm()) {
             try {
+                const toastId = toast.loading("Please wait...")
+
                 const response = await fetch(
                     `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
                     {
@@ -58,8 +61,14 @@ export default function LoginForm() {
                 )
 
                 if (!response.ok) {
+                    toast.error("Invalid credential", {
+                        id: toastId,
+                    })
                     throw new Error("Failed to create account")
                 }
+                toast.success("Success", {
+                    id: toastId,
+                })
                 const data = await response.json()
                 localStorage.setItem("access_token", data.access_token)
                 localStorage.setItem("refresh_token", data.refresh_token)
@@ -79,7 +88,7 @@ export default function LoginForm() {
             <h2 className='text-2xl font-bold'>Login</h2>
 
             <div className='space-y-2'>
-                <Label htmlFor='username'>Username</Label>
+                <Label htmlFor='username'>Username or email</Label>
                 <Input
                     type='text'
                     id='userName'
@@ -116,8 +125,14 @@ export default function LoginForm() {
 
             <p className='mt-5 text-center'>
                 Want to create account?{" "}
-                <Link href='/signup' className='ml-2'>
-                    <Button>Sign Up</Button>
+                <Link href='/signup' className='ml-2 underline'>
+                    Sign Up
+                </Link>
+            </p>
+            <p className='mt-5 text-center'>
+                Forgot password?
+                <Link href='/forget-password' className='ml-2 underline'>
+                    Reset
                 </Link>
             </p>
         </form>
