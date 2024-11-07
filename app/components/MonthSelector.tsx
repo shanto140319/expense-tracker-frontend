@@ -1,4 +1,5 @@
 "use client"
+import {Button} from "@/components/ui/button"
 import {endOfMonth, format, startOfMonth} from "date-fns"
 import {useState} from "react"
 
@@ -9,8 +10,12 @@ interface DateRange {
 
 interface MonthSelectorProps {
     setDateRange: (range: DateRange) => void
+    setIsDateChanged: (isDateChanged: boolean) => void
 }
-const MonthSelector = ({setDateRange}: MonthSelectorProps) => {
+const MonthSelector = ({
+    setDateRange,
+    setIsDateChanged,
+}: MonthSelectorProps) => {
     const [selectedMonth, setSelectedMonth] = useState(new Date())
 
     const handleMonthChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,11 +32,12 @@ const MonthSelector = ({setDateRange}: MonthSelectorProps) => {
         })
     }
 
+    const handleClick = () => {
+        setIsDateChanged(true)
+    }
+
     return (
-        <div className='max-w-md mx-auto my-10'>
-            <label htmlFor='month' className='block mb-2 text-lg font-semibold'>
-                Select Month:
-            </label>
+        <div className='max-w-md mx-auto my-10 flex items-center gap-5'>
             <input
                 type='month'
                 id='month'
@@ -39,6 +45,7 @@ const MonthSelector = ({setDateRange}: MonthSelectorProps) => {
                 onChange={handleMonthChange}
                 className='block w-full p-2 border border-gray-300 rounded-lg'
             />
+            <Button onClick={handleClick}>Submit</Button>
         </div>
     )
 }

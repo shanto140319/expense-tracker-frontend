@@ -7,6 +7,7 @@ import {AlertCircle} from "lucide-react"
 import Link from "next/link"
 import {useRouter} from "next/navigation"
 import {ChangeEvent, FormEvent, useState} from "react"
+import toast from "react-hot-toast"
 
 interface FormData {
     userName: string
@@ -18,6 +19,7 @@ interface FormErrors {
     userName?: string
     email?: string
     password?: string
+    confirmPassword?: string
 }
 
 export default function CreateAccountForm() {
@@ -30,6 +32,7 @@ export default function CreateAccountForm() {
 
     const [errors, setErrors] = useState<FormErrors>({})
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [confirmPassword, setConfirmPassword] = useState("")
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target
@@ -41,8 +44,11 @@ export default function CreateAccountForm() {
         if (!formData.userName) newErrors.userName = "Username is required"
         if (!formData.email) newErrors.email = "Email number is required"
         if (!formData.password) newErrors.password = "Password is required"
-        else if (formData.password.length < 8)
+        if (formData.password.length < 8)
             newErrors.password = "Password must be at least 8 characters"
+        if (formData.password !== confirmPassword) {
+            newErrors.confirmPassword = "Passwords are not equal"
+        }
         setErrors(newErrors)
         return Object.keys(newErrors).length === 0
     }
@@ -64,6 +70,8 @@ export default function CreateAccountForm() {
                 )
 
                 if (!response.ok) {
+                    const data = await response.json()
+                    toast.error(data.message)
                     throw new Error("Failed to create account")
                 }
 
@@ -128,6 +136,21 @@ export default function CreateAccountForm() {
                 {errors.password && (
                     <p className='text-sm text-red-500 flex items-center gap-1'>
                         <AlertCircle size={16} /> {errors.password}
+                    </p>
+                )}
+            </div>
+            <div className='space-y-2'>
+                <Label htmlFor='password'>Confirm password</Label>
+                <Input
+                    type='password'
+                    id='password'
+                    name='password'
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+                {errors.confirmPassword && (
+                    <p className='text-sm text-red-500 flex items-center gap-1'>
+                        <AlertCircle size={16} /> {errors.confirmPassword}
                     </p>
                 )}
             </div>

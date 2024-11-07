@@ -16,17 +16,14 @@ export default function LoginForm() {
     }
 
     const validateForm = () => {
-        if (!email) {
-            return
-        } else {
-            return true
-        }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        return emailRegex.test(email)
     }
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
-        const toastId = toast.loading("Please wait...")
         if (validateForm()) {
+            const toastId = toast.loading("Please wait...")
             try {
                 const response = await fetch(
                     `${process.env.NEXT_PUBLIC_API_URL}/user/forget/${email}`,
@@ -54,6 +51,8 @@ export default function LoginForm() {
                     id: toastId,
                 })
             }
+        } else {
+            toast.error("Please enter valid email")
         }
     }
 

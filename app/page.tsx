@@ -4,24 +4,19 @@ import {endOfMonth, format, startOfMonth} from "date-fns"
 import {LogOut} from "lucide-react"
 import Link from "next/link"
 import {useRouter} from "next/navigation"
-import {useEffect, useState} from "react"
+import {useState} from "react"
 import MonthSelector from "./components/MonthSelector"
 import Transactions from "./components/Transactions"
 
 export default function Home() {
-    const [dateRange, setDateRange] = useState({startDate: "", endDate: ""})
-    const router = useRouter()
-    useEffect(() => {
-        const date = new Date()
-        // Determine the start and end of the selected month
-        const start = startOfMonth(date)
-        const end = endOfMonth(date)
+    const [dateRange, setDateRange] = useState({
+        startDate: format(startOfMonth(new Date()), "yyyy-MM-dd"),
+        endDate: format(endOfMonth(new Date()), "yyyy-MM-dd"),
+    })
 
-        setDateRange({
-            startDate: format(start, "yyyy-MM-dd"),
-            endDate: format(end, "yyyy-MM-dd"),
-        })
-    }, [])
+    const [isDateChanged, setIsDateChanged] = useState(false)
+
+    const router = useRouter()
 
     const logOut = () => {
         localStorage.clear()
@@ -29,8 +24,7 @@ export default function Home() {
     }
     return (
         <main className='my-10'>
-            <Button className='mb-5 flex' onClick={logOut}>
-                Logout
+            <Button className='mb-10 flex ml-auto' onClick={logOut}>
                 <LogOut />
             </Button>
             <div className='flex items-center gap-10'>
@@ -41,8 +35,15 @@ export default function Home() {
                     <Button>Add Income</Button>
                 </Link>
             </div>
-            <MonthSelector setDateRange={setDateRange} />
-            <Transactions dateRange={dateRange} />
+            <MonthSelector
+                setDateRange={setDateRange}
+                setIsDateChanged={setIsDateChanged}
+            />
+            <Transactions
+                dateRange={dateRange}
+                isDateChanged={isDateChanged}
+                setIsDateChanged={setIsDateChanged}
+            />
         </main>
     )
 }

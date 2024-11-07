@@ -12,8 +12,14 @@ type DateRange = {
 
 interface PropsType {
     dateRange: DateRange
+    isDateChanged: boolean
+    setIsDateChanged: (isDateChanged: boolean) => void
 }
-const Transactions = ({dateRange}: PropsType) => {
+const Transactions = ({
+    dateRange,
+    isDateChanged,
+    setIsDateChanged,
+}: PropsType) => {
     const {data, loading, refetch} = useFetch<Transaction[]>(
         `${process.env.NEXT_PUBLIC_API_URL}/transaction/getall?startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`
     )
@@ -66,11 +72,12 @@ const Transactions = ({dateRange}: PropsType) => {
     }, [data])
 
     useEffect(() => {
-        if (dateRange.startDate && dateRange.endDate) {
+        if (isDateChanged) {
             refetch()
+            setIsDateChanged(false)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dateRange])
+    }, [isDateChanged])
 
     if (loading) return <p>Loading...</p>
 
