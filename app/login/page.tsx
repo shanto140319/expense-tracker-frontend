@@ -27,13 +27,16 @@ export default function LoginForm() {
     })
 
     const token =
-        typeof window !== "undefined" ? localStorage.getItem("token") : null
+        typeof window !== "undefined"
+            ? localStorage.getItem("access_token")
+            : null
 
     useEffect(() => {
         if (token) {
             router.replace("/")
         }
-    }, [token, router])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [token])
 
     const [errors, setErrors] = useState<FormErrors>({})
 
@@ -81,7 +84,7 @@ export default function LoginForm() {
                 const data = await response.json()
                 localStorage.setItem("access_token", data.access_token)
                 localStorage.setItem("refresh_token", data.refresh_token)
-                router.push("/")
+                router.replace("/")
             } catch (error) {
                 console.error("Error:", error)
                 setErrors((prev) => ({

@@ -5,7 +5,9 @@ const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
     const WithAuthComponent = (props: P) => {
         const router = useRouter()
         const token =
-            typeof window !== "undefined" ? localStorage.getItem("token") : null
+            typeof window !== "undefined"
+                ? localStorage.getItem("access_token")
+                : null
 
         useEffect(() => {
             if (!token) {
