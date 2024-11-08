@@ -7,8 +7,8 @@ import {useRouter} from "next/navigation"
 import {useState} from "react"
 import MonthSelector from "./components/MonthSelector"
 import Transactions from "./components/Transactions"
-
-export default function Home() {
+import withAuth from "./components/hoc/withAuth"
+function Home() {
     const [dateRange, setDateRange] = useState({
         startDate: format(startOfMonth(new Date()), "yyyy-MM-dd"),
         endDate: format(endOfMonth(new Date()), "yyyy-MM-dd"),
@@ -47,3 +47,4 @@ export default function Home() {
         </main>
     )
 }
+export default withAuth(Home)

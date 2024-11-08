@@ -6,7 +6,7 @@ import {Label} from "@/components/ui/label"
 import {AlertCircle} from "lucide-react"
 import Link from "next/link"
 import {useRouter} from "next/navigation"
-import {ChangeEvent, FormEvent, useState} from "react"
+import {ChangeEvent, FormEvent, useEffect, useState} from "react"
 import toast from "react-hot-toast"
 
 interface FormData {
@@ -25,6 +25,15 @@ export default function LoginForm() {
         userName: "",
         password: "",
     })
+
+    const token =
+        typeof window !== "undefined" ? localStorage.getItem("token") : null
+
+    useEffect(() => {
+        if (token) {
+            router.replace("/")
+        }
+    }, [token, router])
 
     const [errors, setErrors] = useState<FormErrors>({})
 

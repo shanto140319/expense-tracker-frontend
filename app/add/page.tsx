@@ -11,6 +11,7 @@ import {Suspense, useState} from "react"
 import toast from "react-hot-toast"
 import AddCategoryModal from "../components/AddCategoryModal"
 import Categories from "../components/Categories"
+import withAuth from "../components/hoc/withAuth"
 
 const Page = () => {
     const searchParams = useSearchParams()
@@ -136,4 +137,4 @@ const Page = () => {
     )
 }
 
-export default Page
+export default withAuth(Page)
