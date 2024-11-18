@@ -1,10 +1,12 @@
 "use client"
 
+import {Skeleton} from "@/components/ui/skeleton"
 import {GroupedData, Transaction} from "@/lib/types"
 import {useEffect, useState} from "react"
 import useFetch from "../customHooks/useFetch"
 import AccordionData from "./AccordionData"
 import PieTransactions from "./PieTransactions"
+import RecentTransaction from "./RecentTransaction"
 type DateRange = {
     startDate: string
     endDate: string
@@ -26,7 +28,6 @@ const Transactions = ({
     const [groupedData, setGroupedData] = useState<GroupedData>({})
     const [totalIncome, setTotalincome] = useState<number>(0)
     const [totalExpense, setTotalExpense] = useState<number>(0)
-
     useEffect(() => {
         if (data && Array.isArray(data)) {
             const grouped = data.reduce((acc: GroupedData, transaction) => {
@@ -79,7 +80,30 @@ const Transactions = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isDateChanged])
 
-    if (loading) return <p>Loading...</p>
+    if (loading)
+        return (
+            <section>
+                <div className='grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-center gap-5 mt-5'>
+                    <Skeleton className='h-10 w-full' />
+                    <Skeleton className='h-10 w-full' />
+                    <Skeleton className='h-10 w-full' />
+                    <Skeleton className='h-10 w-full' />
+                </div>
+                <div className='mt-12 flex justify-center w-full'>
+                    <Skeleton className='h-[260px] w-[260px] rounded-full' />
+                </div>
+                <div className='grid gap-5 w-full max-w-[400px] mt-10'>
+                    <div className='flex items-center gap-10'>
+                        <Skeleton className='h-10 w-full' />
+                        <Skeleton className='h-10 w-full' />
+                    </div>
+                    <div className='flex items-center gap-10'>
+                        <Skeleton className='h-10 w-full' />
+                        <Skeleton className='h-10 w-full' />
+                    </div>
+                </div>
+            </section>
+        )
 
     return (
         <section>
@@ -105,7 +129,7 @@ const Transactions = ({
                         groupedData={groupedData}
                         totalExpense={totalExpense}
                     />
-
+                    <RecentTransaction data={data} refetch={refetch} />
                     <h2 className='font-bold mt-10 text-2xl'>All Expenses</h2>
                     <AccordionData
                         groupedData={groupedData}

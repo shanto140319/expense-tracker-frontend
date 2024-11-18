@@ -97,11 +97,14 @@ const AccordionData = ({
                                                             ).toLocaleDateString()}
                                                         </p>
                                                     </div>
-                                                    <div className='flex items-center gap-5'>
+                                                    <div className='flex items-center gap-3'>
                                                         <Link
                                                             href={`/update/${transaction.id}?type=${transaction.type}`}
                                                         >
-                                                            <Button size='icon'>
+                                                            <Button
+                                                                size='icon'
+                                                                className='h-7 w-7'
+                                                            >
                                                                 <Pencil className='h-4 w-4' />
                                                                 <span className='sr-only'>
                                                                     Update

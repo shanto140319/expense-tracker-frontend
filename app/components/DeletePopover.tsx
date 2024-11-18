@@ -16,8 +16,8 @@ export default function DeleteButton({onDelete}: {onDelete: () => void}) {
     return (
         <Popover open={isOpen} onOpenChange={setIsOpen}>
             <PopoverTrigger asChild>
-                <Button variant='destructive' size='icon'>
-                    <Trash2 className='h-4 w-4' />
+                <Button variant='destructive' size='icon' className='h-7 w-7'>
+                    <Trash2 className='h-3 w-3' />
                     <span className='sr-only'>Delete</span>
                 </Button>
             </PopoverTrigger>

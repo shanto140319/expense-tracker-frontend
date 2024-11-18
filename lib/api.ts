@@ -45,6 +45,7 @@ api.interceptors.response.use(
                 }
             } catch (refreshError) {
                 // Redirect to login if refresh fails
+                localStorage.clear() //clearing local token if refresh token expires
                 window.location.href = "/login"
                 return Promise.reject(refreshError)
             }
